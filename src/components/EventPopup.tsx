@@ -88,13 +88,12 @@ const EventPopup: React.FC<EventPopupProps> = ({ event, onClose }) => {
           </Typography>
 
           <Typography variant="body2" color="#000" mb={2}>
-            Interview Date: {formatDate(event.start) || "29 Aug 2024"}
+            Interview Date: {formatDate(event.start) || "N/A"}
           </Typography>
 
           <Typography variant="body2" color="#000" mb={2}>
             Interview Time:{" "}
-            {`${formatTime(event.start)} - ${formatTime(event.end)}` ||
-              "05 - 06:45 PM"}
+            {`${formatTime(event.start)} - ${formatTime(event.end)}` || "N/A"}
           </Typography>
 
           <Typography variant="body2" color="#000" mb={3}>

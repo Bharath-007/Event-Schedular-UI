@@ -1,6 +1,13 @@
 import React from "react";
 import { CalendarEvent } from "./types/types";
-import { Box, Divider, IconButton, Typography, useMediaQuery, useTheme } from "@mui/material";
+import {
+  Box,
+  Divider,
+  IconButton,
+  Typography,
+  useMediaQuery,
+  useTheme,
+} from "@mui/material";
 import { IoCloseCircle, IoPencil, IoTrash } from "react-icons/io5";
 import moment from "moment";
 
@@ -16,29 +23,34 @@ const EventList: React.FC<EventListProps> = ({
   onClose,
 }) => {
   const theme = useTheme();
-  const isSmallScreen = useMediaQuery(theme.breakpoints.down('sm'));
-  const isMediumScreen = useMediaQuery(theme.breakpoints.between('sm', 'md'));
+  const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
+  const isMediumScreen = useMediaQuery(theme.breakpoints.between("sm", "md"));
 
   return (
-    <Box sx={{
-      width: '100%',
-      maxHeight: '100vh',
-      overflowY: 'auto'
-    }}>
+    <Box
+      sx={{
+        width: "100%",
+        maxHeight: "100vh",
+        overflowY: "auto",
+      }}
+    >
       <Box
         sx={{
           display: "flex",
           alignItems: "center",
           justifyContent: "space-between",
-          px: 2,
-          py: 1,
+          px: 1.2,
+          py: 0,
           position: "sticky",
           top: 0,
           backgroundColor: "white",
           zIndex: 10,
         }}
       >
-        <Typography variant={isSmallScreen ? "body2" : "body1"} fontWeight="medium">
+        <Typography
+          variant={isSmallScreen ? "body2" : "body1"}
+          fontWeight="medium"
+        >
           Meetings
         </Typography>
         <IconButton onClick={onClose} size={isSmallScreen ? "small" : "medium"}>
@@ -46,10 +58,12 @@ const EventList: React.FC<EventListProps> = ({
         </IconButton>
       </Box>
       <Divider />
-      <Box sx={{
-        width: '100%',
-        py: 1,
-      }}>
+      <Box
+        sx={{
+          width: "100%",
+          py: 1,
+        }}
+      >
         {events.map((event, index) => (
           <React.Fragment key={index}>
             <Box
@@ -73,7 +87,7 @@ const EventList: React.FC<EventListProps> = ({
                 fontWeight="medium"
                 sx={{
                   textTransform: "capitalize",
-                  pr: { xs: 8, sm: 10 } 
+                  pr: { xs: 8, sm: 10 },
                 }}
                 noWrap
               >
@@ -85,13 +99,13 @@ const EventList: React.FC<EventListProps> = ({
                   fontSize={{ xs: "11px", sm: "12px", md: "13px" }}
                   sx={{
                     textTransform: "capitalize",
-                    display: 'flex',
-                    flexDirection: { xs: 'column', sm: 'row' },
-                    alignItems: { xs: 'flex-start', sm: 'center' },
-                    gap: { xs: 0.5, sm: 0 }
+                    display: "flex",
+                    flexDirection: { xs: "column", sm: "row" },
+                    alignItems: { xs: "flex-start", sm: "center" },
+                    gap: { xs: 0.5, sm: 0 },
                   }}
                 >
-                  <span style={{ display: 'inline-block' }}>
+                  <span style={{ display: "inline-block" }}>
                     {event?.event?.summary}
                   </span>
 
@@ -99,15 +113,19 @@ const EventList: React.FC<EventListProps> = ({
                     style={{
                       color: "#454545",
                       opacity: 0.4,
-                      margin: '0 4px',
-                      display: isMediumScreen || !isSmallScreen ? 'inline-block' : 'none'
+                      margin: "0 4px",
+                      display:
+                        isMediumScreen || !isSmallScreen
+                          ? "inline-block"
+                          : "none",
                     }}
                   >
                     |
                   </span>
 
-                  <span style={{ display: 'inline-block' }}>
-                    Interviewer: {event?.event?.user_det?.handled_by?.firstName ?? "N/A"}
+                  <span style={{ display: "inline-block" }}>
+                    Interviewer:{" "}
+                    {event?.event?.user_det?.handled_by?.firstName ?? "N/A"}
                   </span>
                 </Typography>
               </Box>
@@ -117,13 +135,13 @@ const EventList: React.FC<EventListProps> = ({
                 sx={{
                   textTransform: "capitalize",
                   mt: 0.5,
-                  display: 'flex',
-                  flexDirection: { xs: 'column', sm: 'row' },
-                  alignItems: { xs: 'flex-start', sm: 'center' },
-                  gap: { xs: 0.5, sm: 0 }
+                  display: "flex",
+                  flexDirection: { xs: "column", sm: "row" },
+                  alignItems: { xs: "flex-start", sm: "center" },
+                  gap: { xs: 0.5, sm: 0 },
                 }}
               >
-                <span style={{ display: 'inline-block' }}>
+                <span style={{ display: "inline-block" }}>
                   Date: {moment(event?.start).format("DD MMM YYYY")}
                 </span>
 
@@ -131,15 +149,19 @@ const EventList: React.FC<EventListProps> = ({
                   style={{
                     color: "#454545",
                     opacity: 0.4,
-                    margin: '0 4px',
-                    display: isMediumScreen || !isSmallScreen ? 'inline-block' : 'none'
+                    margin: "0 4px",
+                    display:
+                      isMediumScreen || !isSmallScreen
+                        ? "inline-block"
+                        : "none",
                   }}
                 >
                   |
                 </span>
 
-                <span style={{ display: 'inline-block' }}>
-                  Time: {moment(event?.start, "HH:mm").format("h:mm A")} - {moment(event?.end, "HH:mm").format("h:mm A")}
+                <span style={{ display: "inline-block" }}>
+                  Time: {moment(event?.start, "HH:mm").format("h:mm A")} -{" "}
+                  {moment(event?.end, "HH:mm").format("h:mm A")}
                 </span>
               </Typography>
 

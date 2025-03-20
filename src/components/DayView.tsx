@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { CalendarEvent } from "./types/types";
-import {  generateTimeSlots, getEventsForDate } from "./utils";
+import { generateTimeSlots, getEventsForDate } from "./utils";
 import EventPopup from "./EventPopup";
 import EventCard from "./EventCard";
 
@@ -18,7 +18,6 @@ const DayView: React.FC<DayViewProps> = ({ events, currentDate }) => {
   const dayEvents = getEventsForDate(events, currentDate);
 
   const getEventsForTimeSlot = (timeSlot: string) => {
-
     const timeParts = timeSlot.split(" ");
     const hourStr = timeParts[0].trim();
     const period = timeParts[1].trim();
@@ -48,16 +47,17 @@ const DayView: React.FC<DayViewProps> = ({ events, currentDate }) => {
           const slotEvents = getEventsForTimeSlot(timeSlot);
           return (
             <div key={timeSlot} className="flex border-b">
-              <div className={`min-h-32 w-60 text-center text-sky-500 border-r bg-white m-px mt-0 pt-24 `}>
+              <div
+                className={`min-h-32 w-60 text-center text-sky-500 border-r bg-white m-px mt-0 pt-24 `}
+              >
                 {timeSlot}
               </div>
-              <div className="flex-grow p-2 relative bg-white mb-px mr-px"
-              // style={{ border: '1px solid red' }}
+              <div
+                className="flex-grow p-2 bg-white mb-px mr-px"
+                // style={{ border: '1px solid red' }}
               >
                 {slotEvents.length > 0 ? (
-                  <div
-                    className="transform translate-y-12 transition duration-300 ease-in-out"
-                  >
+                  <div className="transform translate-y-28 transition duration-300 ease-in-out">
                     <EventCard events={slotEvents} />
                   </div>
                 ) : (

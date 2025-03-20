@@ -44,18 +44,20 @@ const WeekView: React.FC<WeekViewProps> = ({ events, currentDate }) => {
 
   return (
     <div className="flex flex-col h-screen overflow-auto ">
-
       <div className="flex-none grid grid-cols-8 border-b bg-gray-200">
         <div className="p-4 border-r bg-white"></div>
         {daysOfWeek.map((day, index) => (
           <div
             key={index}
-            className={`p-4 text-center bg-white ${daysOfWeek.length === index + 1 ? '' : 'mr-px'} mb-px ${day.getDate() === new Date().getDate() &&
+            className={`p-4 text-center bg-white ${
+              daysOfWeek.length === index + 1 ? "" : "mr-px"
+            } mb-px ${
+              day.getDate() === new Date().getDate() &&
               day.getMonth() === new Date().getMonth() &&
               day.getFullYear() === new Date().getFullYear()
-              ? "bg-blue-50"
-              : ""
-              }`}
+                ? "bg-blue-50"
+                : ""
+            }`}
           >
             <div className="text-center font-semibold">
               {day.getDate() +
@@ -74,7 +76,10 @@ const WeekView: React.FC<WeekViewProps> = ({ events, currentDate }) => {
             key={timeSlot}
             className="grid grid-cols-8 border-b bg-white mb-px"
           >
-            <div className="min-h-20 px-2 text-right text-sky-500 pt-16" style={{ borderRight: '1px solid #F3F3F3' }}>
+            <div
+              className="min-h-20 px-2 text-right text-sky-500 pt-16"
+              style={{ borderRight: "1px solid #F3F3F3" }}
+            >
               {timeSlot}
             </div>
             {daysOfWeek.map((day, dayIndex) => {
@@ -82,11 +87,11 @@ const WeekView: React.FC<WeekViewProps> = ({ events, currentDate }) => {
               return (
                 <div
                   key={dayIndex}
-                  className={`relative min-h-20 border-r flex pt-12`}
-                  style={{ borderRight: '1px solid #F3F3F3' }}
+                  className={`relative min-h-20 border-r flex pt-16`}
+                  style={{ borderRight: "1px solid #F3F3F3" }}
                 >
                   {slotEvents.length > 0 && (
-                    <div className="absolute p-0" >
+                    <div className="absolute p-0">
                       {/* <div className="flex items-baseline"> */}
                       <EventCard events={slotEvents} />
                       {/* </div> */}

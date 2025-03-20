@@ -85,6 +85,23 @@ export const groupEventsByTime = (
   return groupedEvents;
 };
 
+export const groupEventsByDay = (
+  events: CalendarEvent[]
+): Record<string, CalendarEvent[]> => {
+  const groupedEvents: Record<string, CalendarEvent[]> = {};
+
+  events.forEach((event) => {
+    const timeKey = `${event.start.getDay()}}`;
+
+    if (!groupedEvents[timeKey]) {
+      groupedEvents[timeKey] = [];
+    }
+
+    groupedEvents[timeKey].push(event);
+  });
+
+  return groupedEvents;
+};
 
 export const generateTimeSlots = (): string[] => {
   const timeSlots = [];

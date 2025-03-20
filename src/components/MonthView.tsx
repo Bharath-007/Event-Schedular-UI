@@ -4,6 +4,7 @@ import { CalendarEvent } from "./types/types";
 import {
   generateDaysInMonth,
   getEventsForDate,
+  groupEventsByDay,
   groupEventsByTime,
 } from "./utils";
 import EventCard from "./EventCard";
@@ -13,8 +14,6 @@ interface MonthViewProps {
 }
 
 const MonthView: React.FC<MonthViewProps> = ({ events, currentDate }) => {
-
-
   const daysInMonth = generateDaysInMonth(
     currentDate.getFullYear(),
     currentDate.getMonth()
@@ -56,19 +55,21 @@ const MonthView: React.FC<MonthViewProps> = ({ events, currentDate }) => {
 
           const dayEvents = getEventsForDate(events, day);
           const hasEvents = dayEvents.length > 0;
-          const groupedEvents = groupEventsByTime(dayEvents);
+          const groupedEvents = groupEventsByDay(dayEvents);
 
           return (
             <div
               key={index}
-              className={`min-h-32 p-1 ${isCurrentMonth ? "bg-white" : "bg-gray-50 text-gray-400"
-                } ${isToday ? "border-2 border-blue-500" : ""}`}
+              className={`min-h-32 p-1 ${
+                isCurrentMonth ? "bg-white" : "bg-gray-50 text-gray-400"
+              } ${isToday ? "border-2 border-blue-500" : ""}`}
               onClick={() => handleDateClick(day)}
             >
               <div className="flex justify-center">
                 <span
-                  className={`font-semibold p-1 items-center ${isToday ? "text-blue-500" : ""
-                    }`}
+                  className={`font-semibold p-1 items-center ${
+                    isToday ? "text-blue-500" : ""
+                  }`}
                 >
                   {day.getDate()}
                 </span>
@@ -79,9 +80,7 @@ const MonthView: React.FC<MonthViewProps> = ({ events, currentDate }) => {
                   {Object.entries(groupedEvents).map(
                     ([timeKey, timeEvents]) => (
                       <div key={timeKey} className="flex justify-between p-3">
-                        <EventCard
-                          events={timeEvents}
-                        />
+                        <EventCard events={timeEvents} />
                       </div>
                     )
                   )}

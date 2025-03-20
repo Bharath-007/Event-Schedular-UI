@@ -104,9 +104,25 @@ const EventCard: FC<IEventCard> = ({ events }) => {
           open={isOpen}
           anchorEl={anchorEl}
           onClose={handleClose}
+          // anchorOrigin={{
+          //   vertical: "top",
+          //   horizontal: "right",
+          // }}
           anchorOrigin={{
             vertical: "top",
-            horizontal: "right",
+            horizontal:
+              anchorEl?.getBoundingClientRect().left &&
+              anchorEl?.getBoundingClientRect().left > window.innerWidth / 2
+                ? "left"
+                : "right",
+          }}
+          transformOrigin={{
+            vertical: "top",
+            horizontal:
+              anchorEl?.getBoundingClientRect().left &&
+              anchorEl?.getBoundingClientRect().left > window.innerWidth / 2
+                ? "right"
+                : "left",
           }}
           sx={{ m: 1 }}
         >
