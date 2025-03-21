@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { CalendarEvent } from "./types/types";
 import { generateTimeSlots, getEventsForDate } from "./utils";
 import EventPopup from "./EventPopup";
-import EventCard from "./EventCard";
+import DayEventCard from "./DayEventCard";
 
 interface DayViewProps {
   events: CalendarEvent[];
@@ -30,39 +30,82 @@ const DayView: React.FC<DayViewProps> = ({ events, currentDate }) => {
       hour = 0;
     }
 
-    return dayEvents.filter((event) => {
-      const eventStart = event.start;
-      return eventStart.getHours() === hour;
+    const slotEvents = dayEvents.filter((event) => {
+      const eventStartHour = event.start.getHours();
+      return eventStartHour === hour;
+    });
+
+    return slotEvents.sort((a, b) => {
+      const startDiff = a.start.getTime() - b.start.getTime();
+      if (startDiff === 0) {
+        return (
+          b.end.getTime() -
+          b.start.getTime() -
+          (a.end.getTime() - a.start.getTime())
+        );
+      }
+      return startDiff;
     });
   };
 
-  const handleEventClick = (event: CalendarEvent) => {
-    setSelectedEvent(event);
+  const getOverlappingGroups = (events: CalendarEvent[]) => {
+    const groups: CalendarEvent[][] = [];
+
+    events.forEach((event) => {
+      const eventStart = event.start.getTime();
+      const eventEnd = event.end.getTime();
+
+      let foundGroup = false;
+
+      for (const group of groups) {
+        const overlapsWithGroup = group.some((groupEvent) => {
+          const groupStart = groupEvent.start.getTime();
+          const groupEnd = groupEvent.end.getTime();
+          return eventStart < groupEnd && eventEnd > groupStart;
+        });
+
+        if (overlapsWithGroup) {
+          group.push(event);
+          foundGroup = true;
+          break;
+        }
+      }
+
+      if (!foundGroup) {
+        groups.push([event]);
+      }
+    });
+
+    return groups;
   };
 
   return (
-    <div className="flex flex-col h-screen overflow-auto bg-gray-200">
+    <div className="flex flex-col h-screen overflow-auto bg-gray-200 t-2">
       <div className="flex-grow overflow-y-auto">
-        {timeSlots.map((timeSlot) => {
+        {timeSlots.map((timeSlot, index) => {
           const slotEvents = getEventsForTimeSlot(timeSlot);
+          const overlappingGroups = getOverlappingGroups(slotEvents);
+
           return (
-            <div key={timeSlot} className="flex border-b">
+            <div key={timeSlot} className="flex border-b relative">
               <div
-                className={`min-h-32 w-60 text-center text-sky-500 border-r bg-white m-px mt-0 pt-24`}
+                className={`min-h-[80px] w-32 text-right text-sky-500 border-r bg-white transform -translate-y-${
+                  index !== 0 ? 3 : 0
+                }`}
               >
                 {timeSlot}
               </div>
-              <div
-                className="flex-grow p-2 bg-white mb-px mr-px"
-                // style={{ border: '1px solid red' }}
-              >
-                {slotEvents.length > 0 ? (
-                  <div className="transform translate-y-36 transition duration-300 ease-in-out">
-                    <EventCard events={slotEvents} type="day" />
-                  </div>
-                ) : (
-                  <div className="h-full w-full"></div>
-                )}
+              <div className="flex-grow min-h-[80px] p-2 bg-white mb-px mr-px relative">
+                {overlappingGroups.map((group, groupIndex) => (
+                  <React.Fragment key={groupIndex}>
+                    <DayEventCard
+                      key={`${groupIndex}`}
+                      events={group}
+                      totalOverlapping={group.length}
+                      overlapIndex={groupIndex}
+                    />
+                  </React.Fragment>
+                ))}
               </div>
             </div>
           );
