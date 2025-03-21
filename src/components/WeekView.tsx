@@ -87,14 +87,12 @@ const WeekView: React.FC<WeekViewProps> = ({ events, currentDate }) => {
               return (
                 <div
                   key={dayIndex}
-                  className={`relative min-h-20 border-r flex pt-16`}
+                  className={` min-h-20 border-r flex pt-0`}
                   style={{ borderRight: "1px solid #F3F3F3" }}
                 >
                   {slotEvents.length > 0 && (
-                    <div className="absolute p-0">
-                      {/* <div className="flex items-baseline"> */}
+                    <div className=" p-0 transform translate-y-20">
                       <EventCard events={slotEvents} />
-                      {/* </div> */}
                     </div>
                   )}
                 </div>
