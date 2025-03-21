@@ -21,20 +21,67 @@ const WeekView: React.FC<WeekViewProps> = ({ events, currentDate }) => {
   const timeSlots = generateTimeSlots();
   const daysOfWeek = generateDaysOfWeek(currentDate);
 
+  const getOverlappingGroups = (events: CalendarEvent[]) => {
+    const groups: CalendarEvent[][] = [];
+
+    events.forEach((event) => {
+      const eventStart = event.start.getTime();
+      const eventEnd = event.end.getTime();
+
+      let foundGroup = false;
+
+      for (const group of groups) {
+        const overlapsWithGroup = group.some((groupEvent) => {
+          const groupStart = groupEvent.start.getTime();
+          const groupEnd = groupEvent.end.getTime();
+          return eventStart < groupEnd && eventEnd > groupStart;
+        });
+
+        if (overlapsWithGroup) {
+          group.push(event);
+          foundGroup = true;
+          break;
+        }
+      }
+
+      if (!foundGroup) {
+        groups.push([event]);
+      }
+    });
+
+    return groups;
+  };
+
   const getEventsForTimeSlot = (day: Date, timeSlot: string) => {
     const timeParts = timeSlot.split(" ");
-    const hour = parseInt(timeParts[0]);
-    const period = timeParts[1];
+    const hourStr = timeParts[0].trim();
+    const period = timeParts[1].trim();
 
-    let hours = hour;
-    if (period === "PM" && hour !== 12) hours += 12;
-    if (period === "AM" && hour === 12) hours = 0;
+    let hour = parseInt(hourStr);
+
+    if (period === "PM" && hour !== 12) {
+      hour += 12;
+    } else if (period === "AM" && hour === 12) {
+      hour = 0;
+    }
 
     const dayEvents = getEventsForDate(events, day);
 
-    return dayEvents.filter((event) => {
-      const eventStart = event.start;
-      return eventStart.getHours() === hours;
+    const slotEvents = dayEvents.filter((event) => {
+      const eventStartHour = event.start.getHours();
+      return eventStartHour === hour;
+    });
+
+    return slotEvents.sort((a, b) => {
+      const startDiff = a.start.getTime() - b.start.getTime();
+      if (startDiff === 0) {
+        return (
+          b.end.getTime() -
+          b.start.getTime() -
+          (a.end.getTime() - a.start.getTime())
+        );
+      }
+      return startDiff;
     });
   };
 
@@ -43,15 +90,13 @@ const WeekView: React.FC<WeekViewProps> = ({ events, currentDate }) => {
   };
 
   return (
-    <div className="flex flex-col h-screen overflow-auto ">
-      <div className="flex-none grid grid-cols-8 border-b bg-gray-200">
-        <div className="p-4 border-r bg-white"></div>
+    <div className="flex flex-col h-screen overflow-auto">
+      <div className="flex-none grid grid-cols-8 bg-gray-200 mr-4">
+        <div className="py-4 border-r bg-white"></div>
         {daysOfWeek.map((day, index) => (
           <div
             key={index}
-            className={`p-4 text-center bg-white ${
-              daysOfWeek.length === index + 1 ? "" : "mr-px"
-            } mb-px ${
+            className={`py-4 text-center bg-white mb-px   ${
               day.getDate() === new Date().getDate() &&
               day.getMonth() === new Date().getMonth() &&
               day.getFullYear() === new Date().getFullYear()
@@ -70,46 +115,38 @@ const WeekView: React.FC<WeekViewProps> = ({ events, currentDate }) => {
           </div>
         ))}
       </div>
-      <div className="flex-grow overflow-y-clip bg-gray-200">
+
+      <div className="flex-grow overflow-y-clip">
         {timeSlots.map((timeSlot) => (
-          <div
-            key={timeSlot}
-            className="grid grid-cols-8 border-b bg-white mb-px"
-          >
-            <div
-              className="min-h-20 px-2 text-right text-sky-500"
-              style={{ borderRight: "3px solid #F3F3F3" }}
-            >
+          <div key={timeSlot} className="grid grid-cols-8 bg-gray-200">
+            <div className="min-h-20 px-2 py-1 text-right text-sky-500 bg-white mb-px">
               {timeSlot}
             </div>
+
             {daysOfWeek.map((day, dayIndex) => {
               const slotEvents = getEventsForTimeSlot(day, timeSlot);
+              const overlappingGroups = getOverlappingGroups(slotEvents);
+
               return (
                 <div
                   key={dayIndex}
-                  className={` min-h-20 border-r flex pt-0`}
-                  style={{ borderRight: "3px solid #F3F3F3" }}
+                  className="min-h-20 relative bg-white mr-px mb-px"
                 >
-                  {slotEvents.length > 0 && (
-                    <div
-                      className={`p-0 w-40 transform translate-y-0 translate-x-0`}
-                    >
-                      <WeekEventCard events={slotEvents} type="week" />
-                    </div>
-                  )}
+                  {overlappingGroups.map((group, groupIndex) => (
+                    <WeekEventCard
+                      key={`${dayIndex}-${groupIndex}`}
+                      timeSlot={timeSlot}
+                      events={group}
+                      totalOverlapping={overlappingGroups.length}
+                      overlapIndex={groupIndex}
+                    />
+                  ))}
                 </div>
               );
             })}
           </div>
         ))}
       </div>
-
-      {selectedEvent && (
-        <EventPopup
-          event={selectedEvent.event}
-          onClose={() => setSelectedEvent(null)}
-        />
-      )}
     </div>
   );
 };

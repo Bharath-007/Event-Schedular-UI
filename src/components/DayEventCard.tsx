@@ -86,10 +86,13 @@ const DayEventCard: FC<IDayEventCard> = ({
   const boxSx: SxProps<Theme> = {
     padding: "5px",
     borderRadius: "4px",
-    width: eventStyle.width,
+    width: "95%",
+    // maxWidth: eventStyle.width,
+    marginLeft: 2,
     left: eventStyle.left,
     display: "flex",
-    alignItems: "start",
+    alignItems: "center",
+    justifyContent: "center",
     boxShadow: "0px 2px 4px rgba(0, 0, 0, 0.1)",
     borderLeft: "8px solid #3b82f6",
     position: eventStyle.position,
@@ -112,38 +115,50 @@ const DayEventCard: FC<IDayEventCard> = ({
         <Typography
           variant="body2"
           sx={{
-            fontWeight: 500,
+            fontWeight: 600,
             color: "grey.800",
-            fontSize: "0.75rem",
+            fontSize: "1rem",
             textTransform: "capitalize",
+            width: "100%",
+            textAlign: "center",
           }}
         >
           {events[0]?.event?.user_det?.job_id?.jobRequest_Title ?? "N/A"}
         </Typography>
-        <Typography
-          variant="body2"
+        <Box
           sx={{
-            fontWeight: 500,
-            color: "grey.600",
-            fontSize: "0.75rem",
-            lineHeight: 1.2,
+            width: "60%",
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+            padding: "0 5px",
           }}
         >
-          Interviewer:{" "}
-          {events[0]?.event?.user_det?.handled_by?.firstName ?? "N/A"}
-        </Typography>
-
-        <Typography
-          variant="body2"
-          sx={{
-            fontWeight: 400,
-            color: "grey.600",
-            fontSize: "0.75rem",
-          }}
-        >
-          {moment(events[0]?.start).format("h:mm A")} -{" "}
-          {moment(events[0]?.end).format("h:mm A")}
-        </Typography>
+          <Typography
+            variant="body2"
+            sx={{
+              fontWeight: 500,
+              color: "grey.600",
+              fontSize: "0.85rem",
+              lineHeight: 1.2,
+            }}
+          >
+            <span className="font-semibold">Interviewer: </span>
+            {events[0]?.event?.user_det?.handled_by?.firstName ?? "N/A"}
+          </Typography>
+          <Typography
+            variant="body2"
+            sx={{
+              fontWeight: 400,
+              color: "grey.600",
+              fontSize: "0.85rem",
+            }}
+          >
+            <span className="font-semibold">Time:{""}</span>
+            {moment(events[0]?.start).format("h:mm A")} -{" "}
+            {moment(events[0]?.end).format("h:mm A")}
+          </Typography>
+        </Box>
         {events.length > 1 && (
           <Box
             sx={{

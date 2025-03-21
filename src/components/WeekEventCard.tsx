@@ -8,17 +8,25 @@ import EventPopup from "./EventPopup";
 interface IWeekEventCard {
   events: CalendarEvent[];
   type?: string;
+  timeSlot: string;
+  totalOverlapping: number;
+  overlapIndex: number;
 }
 
 interface EventStyle {
   height: string;
-  marginTop: number;
+  top: number;
+  left: string;
+  width: string;
   zIndex: number;
   position: "absolute" | "relative";
-  width: string;
 }
 
-const WeekEventCard: FC<IWeekEventCard> = ({ events, type }) => {
+const WeekEventCard: FC<IWeekEventCard> = ({
+  events,
+  overlapIndex,
+  totalOverlapping,
+}) => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [selectedEvent, setSelectedEvent] = useState<CalendarEvent | null>(
     null
@@ -47,77 +55,52 @@ const WeekEventCard: FC<IWeekEventCard> = ({ events, type }) => {
     if (!events[0]?.start || !events[0]?.end) {
       return {
         height: "100%",
-        marginTop: 0,
+        top: 0,
+        left: "0",
+        width: "100%",
         zIndex: 1,
         position: "absolute",
-        width: "calc(100% - 4px)",
       };
     }
 
     const start = moment(events[0].start);
     const end = moment(events[0].end);
-    const durationMinutes = end.diff(start, "minutes");
-    const durationHours = end.diff(start, "hours", true);
     const startMinutes = start.minutes();
-    const endMinutes = end.minutes();
-    const startHour = start.hour();
-    const endHour = end.hour();
 
-    let height = "100%";
-    let marginTop = 0;
-    let zIndex = 1;
+    const durationMinutes = end.diff(start, "minutes");
+    const heightInPixels = Math.max((durationMinutes / 60) * 80, 40);
 
-    // Base height calculation (80px per hour)
-    const baseHeight = Math.max(durationHours * 80, 40);
+    const topPosition = (startMinutes / 60) * 80;
 
-    if (durationMinutes <= 30) {
-      height = "40px";
-      if (startMinutes >= 30) {
-        marginTop = 40;
-      }
-    } else if (durationMinutes <= 60) {
-      height = "80px";
-      if (startMinutes >= 30) {
-        marginTop = 40;
-        height = "40px";
-      }
-    } else {
-      height = `${baseHeight}px`;
-      if (startMinutes > 0) {
-        marginTop = (startMinutes / 60) * 80;
-      }
-      zIndex = 3;
-    }
-
-    if (endHour > startHour + 1) {
-      const hourSpan = endHour - startHour;
-      height = `${hourSpan * 80 + (endMinutes / 60) * 80}px`;
-    }
+    const actualOverlapping = totalOverlapping || 1;
+    const width = `${100 / actualOverlapping}%`;
+    const left = `${(overlapIndex * 100) / actualOverlapping}%`;
 
     return {
-      height,
-      marginTop,
-      zIndex,
+      height: `${heightInPixels}px`,
+      top: topPosition,
+      left,
+      width,
+      zIndex: durationMinutes > 60 ? 3 : 1,
       position: "absolute",
-      width: "calc(100% - 4px)",
     };
-  }, [events]);
+  }, [events, totalOverlapping, overlapIndex]);
 
   const boxSx: SxProps<Theme> = {
     padding: "5px",
     borderRadius: "4px",
-    width: eventStyle.width,
+    maxWidth: eventStyle.width,
+    width: events.length > 1 ? "95%" : "100%",
     display: "flex",
     alignItems: "start",
     boxShadow: "0px 2px 4px rgba(0, 0, 0, 0.1)",
-    // justifyContent: "space-between",
-    borderLeft: "5px solid #3b82f6",
+    borderLeft: "8px solid #3b82f6",
     position: eventStyle.position,
     flexDirection: "column",
     bgcolor: isOpen ? "#dbeafe" : "white",
     transition: "all 0.2s ease",
     height: eventStyle.height,
-    marginTop: eventStyle.marginTop ? `${eventStyle.marginTop}px` : 0,
+    // overflow: "hidden",
     zIndex: eventStyle.zIndex,
     cursor: "pointer",
     "&:hover": {
@@ -135,8 +118,8 @@ const WeekEventCard: FC<IWeekEventCard> = ({ events, type }) => {
             fontWeight: 500,
             color: "grey.800",
             fontSize: "0.75rem",
-            // lineHeight: 1.2,
-            // overflow: "hidden",
+            // lineHeight: 1,
+            overflow: "hidden",
             textOverflow: "ellipsis",
             display: "-webkit-box",
             WebkitLineClamp: 3,
@@ -145,28 +128,25 @@ const WeekEventCard: FC<IWeekEventCard> = ({ events, type }) => {
         >
           {events[0]?.event?.user_det?.job_id?.jobRequest_Title ?? "N/A"}
         </Typography>
-        <Typography
-          variant="body2"
-          sx={{
-            fontWeight: 500,
-            color: "grey.600",
-            fontSize: "0.75rem",
-            lineHeight: 1.2,
-            overflow: "hidden",
-            textOverflow: "ellipsis",
-            display: "-webkit-box",
-            WebkitLineClamp: 2,
-            visibility:
-              parseInt(eventStyle?.height?.slice(0, 3), 10) < 50
-                ? "hidden"
-                : "visible",
-            WebkitBoxOrient: "vertical",
-          }}
-        >
-          {/* {parseInt(eventStyle?.height?.slice(0, 3), 10)} */}
-          Interviwer:{" "}
-          {events[0]?.event?.user_det?.handled_by?.firstName ?? "N/A"}
-        </Typography>
+        {parseInt(eventStyle?.height?.slice(0, 3), 10) > 50 && (
+          <Typography
+            variant="body2"
+            sx={{
+              fontWeight: 500,
+              color: "grey.600",
+              fontSize: "0.75rem",
+              lineHeight: 1.2,
+              overflow: "hidden",
+              textOverflow: "ellipsis",
+              display: "-webkit-box",
+              WebkitLineClamp: 1,
+              WebkitBoxOrient: "vertical",
+            }}
+          >
+            Interviwer:{" "}
+            {events[0]?.event?.user_det?.handled_by?.firstName ?? "N/A"}
+          </Typography>
+        )}
 
         <Typography
           variant="body2"

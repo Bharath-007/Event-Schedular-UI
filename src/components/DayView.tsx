@@ -90,7 +90,7 @@ const DayView: React.FC<DayViewProps> = ({ events, currentDate }) => {
             <div key={timeSlot} className="flex border-b relative">
               <div
                 className={`min-h-[80px] w-32 text-right text-sky-500 border-r bg-white pr-3 mr-px transform -translate-y-${
-                  index !== 0 ? 3 : 0
+                  index !== 0 ? 0 : 0
                 }`}
               >
                 {timeSlot}

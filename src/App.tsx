@@ -301,13 +301,13 @@ const events: Event[] = [
   },
   {
     id: 8,
-    summary: "Managerial Round",
-    desc: "Managerial Round discussion with management for product manager role",
-    start: "2025-03-22T15:00:00+05:30",
-    end: "2025-03-22T18:00:00+05:30",
-    attendees: "ceo@example.com",
+    summary: "Coding Round",
+    desc: "Data structure and Alogirthm",
+    start: "2025-03-19T15:00:00+05:30",
+    end: "2025-03-19T18:00:00+05:30",
+    attendees: "monitoring_team@example.com",
     status: "Scheduled",
-    comment: "Candidate to present product roadmap",
+    comment: "Candidate to present Machine Coding roadmap",
     score: { P: 9 },
     link: "http://example.com/meeting3",
     user_det: {
@@ -333,20 +333,19 @@ const events: Event[] = [
       },
       job_id: {
         id: 13,
-        jobRequest_Title: "Product Manager",
-        jobRequest_Role: "product_manager",
-        jobRequest_KeySkills: "Agile, Scrum, Product Management",
+        jobRequest_Title: "Machine Monitoring",
+        jobRequest_Role: "machine_coding",
+        jobRequest_KeySkills: "DSA, Alogoithm, Any Programming language",
         jobRequest_Description:
           "Lead cross-functional teams to deliver products.",
       },
     },
     job_id: {
       id: 13,
-      jobRequest_Title: "Product Manager",
-      jobRequest_Role: "product_manager",
-      jobRequest_KeySkills: "Agile, Scrum, Product Management",
-      jobRequest_Description:
-        "Lead cross-functional teams to deliver products.",
+      jobRequest_Title: "Machine Monitoring",
+      jobRequest_Role: "machine_coding",
+      jobRequest_KeySkills: "DSA, Alogoithm, Any Programming language",
+      jobRequest_Description: "Efficient coding practices.",
     },
   },
 ];

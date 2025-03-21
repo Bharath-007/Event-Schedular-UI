@@ -88,22 +88,29 @@ const CalendarHeader: React.FC<CalendarHeaderProps> = ({
           onChange={(_, newValue) => onViewChange(newValue)}
           variant="scrollable"
           scrollButtons="auto"
+          TabIndicatorProps={{
+            style: {
+              backgroundColor: "#3f51b5",
+              height: 3,
+            },
+          }}
         >
-          <Tab
-            label="Day"
-            value="day"
-            sx={{ textTransform: "capitalize", fontWeight: 600 }}
-          />
-          <Tab
-            label="Week"
-            value="week"
-            sx={{ textTransform: "capitalize", fontWeight: 600 }}
-          />
-          <Tab
-            label="Month"
-            value="month"
-            sx={{ textTransform: "capitalize", fontWeight: 600 }}
-          />
+          {["Day", "Week", "Month"].map((label) => (
+            <Tab
+              key={label}
+              label={label}
+              value={label.toLowerCase()}
+              sx={{
+                textTransform: "capitalize",
+                fontWeight: view === label.toLowerCase() ? 600 : 500,
+                color: view === label.toLowerCase() ? "#3f51b5" : "#000",
+                minWidth: 80,
+                "&.MuiButtonBase-root": {
+                  paddingBottom: 0,
+                },
+              }}
+            />
+          ))}
         </Tabs>
       </div>
     </div>
