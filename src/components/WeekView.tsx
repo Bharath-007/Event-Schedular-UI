@@ -77,8 +77,8 @@ const WeekView: React.FC<WeekViewProps> = ({ events, currentDate }) => {
             className="grid grid-cols-8 border-b bg-white mb-px"
           >
             <div
-              className="min-h-20 px-2 text-right text-sky-500 pt-16"
-              style={{ borderRight: "1px solid #F3F3F3" }}
+              className="min-h-28 px-2 text-right text-sky-500 pt-24"
+              style={{ borderRight: "3px solid #F3F3F3" }}
             >
               {timeSlot}
             </div>
@@ -87,12 +87,14 @@ const WeekView: React.FC<WeekViewProps> = ({ events, currentDate }) => {
               return (
                 <div
                   key={dayIndex}
-                  className={` min-h-20 border-r flex pt-0`}
-                  style={{ borderRight: "1px solid #F3F3F3" }}
+                  className={` min-h-28 border-r flex pt-0`}
+                  style={{ borderRight: "3px solid #F3F3F3" }}
                 >
                   {slotEvents.length > 0 && (
-                    <div className=" p-0 transform translate-y-20">
-                      <EventCard events={slotEvents} />
+                    <div
+                      className={`p-0 w-40 transform translate-y-32 translate-x-2`}
+                    >
+                      <EventCard events={slotEvents} type="week" />
                     </div>
                   )}
                 </div>

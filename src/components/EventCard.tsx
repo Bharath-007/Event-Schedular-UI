@@ -1,15 +1,16 @@
 import { Box, Popover, Typography } from "@mui/material";
 import moment from "moment";
-import { FC, useState } from "react";
+import { FC, useMemo, useState } from "react";
 import { CalendarEvent } from "./types/types";
 import EventList from "./EventList";
 import EventPopup from "./EventPopup";
 
 interface IEventCard {
   events: CalendarEvent[];
+  type?: string;
 }
 
-const EventCard: FC<IEventCard> = ({ events }) => {
+const EventCard: FC<IEventCard> = ({ events, type }) => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [selectedEvent, setSelectedEvent] = useState<CalendarEvent | null>(
     null
@@ -34,6 +35,62 @@ const EventCard: FC<IEventCard> = ({ events }) => {
   const isOpen = Boolean(anchorEl);
   const id = isOpen ? "simple-popover" : undefined;
 
+  const timeRange = useMemo(() => {
+    if (!events[0]?.start || !events[0]?.end) return "unknown";
+
+    const startMinutes = moment(events[0].start).minutes();
+    const endMinutes = moment(events[0].end).minutes();
+
+    if (startMinutes === 0 && endMinutes === 0) {
+      return "middle";
+    }
+
+    // if (endMinutes >= 30) {
+    //   return "bottom";
+    // }
+
+    if (startMinutes >= 30) {
+      return "bottom";
+    }
+    if (startMinutes < 30 && endMinutes <= 30) {
+      return "top";
+    }
+
+    return "middle";
+  }, [events]);
+
+  const getMarginTop = () => {
+    if (!type || type === "month") return 0;
+
+    if (type === "week") {
+      switch (timeRange) {
+        case "top":
+          return 0;
+        case "middle":
+          return 2;
+        case "bottom":
+          return 4;
+        default:
+          return 0;
+      }
+    }
+
+    if (type === "day") {
+      switch (timeRange) {
+        case "top":
+          return 0;
+        case "middle":
+          return 0.5;
+        case "bottom":
+          return 3;
+        default:
+          return 0.5;
+      }
+    }
+
+    return 0;
+  };
+
   return (
     <>
       <Box
@@ -52,6 +109,7 @@ const EventCard: FC<IEventCard> = ({ events }) => {
           flexDirection: "column",
           bgcolor: isOpen ? "#dbeafe" : "white",
           transition: "background-color 0.3s ease",
+          mt: getMarginTop(),
           cursor: "pointer",
           "&:hover": {
             bgcolor: "#dbeafe",
@@ -59,6 +117,7 @@ const EventCard: FC<IEventCard> = ({ events }) => {
         }}
         onClick={handleOpen}
       >
+        {/* {getMarginTop() + "-" + timeRange} */}
         <Typography variant="body2" sx={{ fontWeight: 500, color: "grey.800" }}>
           {events[0]?.event?.user_det?.job_id?.jobRequest_Title ?? "N/A"}
         </Typography>

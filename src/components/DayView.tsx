@@ -48,7 +48,7 @@ const DayView: React.FC<DayViewProps> = ({ events, currentDate }) => {
           return (
             <div key={timeSlot} className="flex border-b">
               <div
-                className={`min-h-32 w-60 text-center text-sky-500 border-r bg-white m-px mt-0 pt-24 `}
+                className={`min-h-32 w-60 text-center text-sky-500 border-r bg-white m-px mt-0 pt-24`}
               >
                 {timeSlot}
               </div>
@@ -57,8 +57,8 @@ const DayView: React.FC<DayViewProps> = ({ events, currentDate }) => {
                 // style={{ border: '1px solid red' }}
               >
                 {slotEvents.length > 0 ? (
-                  <div className="transform translate-y-28 transition duration-300 ease-in-out">
-                    <EventCard events={slotEvents} />
+                  <div className="transform translate-y-36 transition duration-300 ease-in-out">
+                    <EventCard events={slotEvents} type="day" />
                   </div>
                 ) : (
                   <div className="h-full w-full"></div>
