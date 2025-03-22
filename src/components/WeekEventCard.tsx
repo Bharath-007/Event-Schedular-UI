@@ -93,7 +93,7 @@ const WeekEventCard: FC<IWeekEventCard> = ({
     width: events.length > 1 ? "95%" : "100%",
     display: "flex",
     alignItems: "start",
-    boxShadow: "0px 2px 4px rgba(0, 0, 0, 0.1)",
+    boxShadow: "0px 2px 4px rgba(0, 0, 0, 0.3)",
     borderLeft: "8px solid #3b82f6",
     position: eventStyle.position,
     flexDirection: "column",
@@ -146,6 +146,29 @@ const WeekEventCard: FC<IWeekEventCard> = ({
             Interviwer:{" "}
             {events[0]?.event?.user_det?.handled_by?.firstName ?? "N/A"}
           </Typography>
+        )}
+        {parseInt(eventStyle?.height?.slice(0, 3), 10) > 150 && (
+          <Box
+            sx={{
+              "&::after": {
+                content: '""',
+                position: "absolute",
+                inset: 0,
+                mx: 1,
+                mt:
+                  parseInt(eventStyle.height.slice(0, 2)) / 7 +
+                  parseInt(eventStyle.height.slice(0, 2)) / 6,
+                mb: parseInt(eventStyle.height.slice(0, 1)) / 2,
+                border: "1px solid rgba(48, 50, 55, 0.3)",
+                // backgroundImage: `url("data:image/svg+xml,%3Csvg width='20' height='20' viewBox='0 0 20 20' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 0 L20 20 M20 0 L0 20' stroke='rgba(48, 50, 55, 0.3)' stroke-width='1' fill='none' /%3E%3C/svg%3E")`,
+                backgroundImage: `url("data:image/svg+xml,%3Csvg width='20' height='20' viewBox='0 0 20 20' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 20 L20 0' stroke='rgba(48, 50, 55, 0.3)' stroke-width='1' fill='none' /%3E%3C/svg%3E")`,
+                backgroundSize: "15px 15px",
+                zIndex: 0,
+                borderRadius: "4px",
+                pointerEvents: "none",
+              },
+            }}
+          ></Box>
         )}
 
         <Typography

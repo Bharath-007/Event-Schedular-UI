@@ -93,7 +93,7 @@ const DayEventCard: FC<IDayEventCard> = ({
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
-    boxShadow: "0px 2px 4px rgba(0, 0, 0, 0.1)",
+    boxShadow: "0px 2px 4px rgba(0, 0, 0, 0.3)",
     borderLeft: "8px solid #3b82f6",
     position: eventStyle.position,
     flexDirection: "column",
