@@ -89,6 +89,30 @@ const WeekView: React.FC<WeekViewProps> = ({ events, currentDate }) => {
     setSelectedEvent(event);
   };
 
+  const getEarliestStartTime = () => {
+    if (!events.length) return null;
+    return Math.min(...events.map((event) => event.start.getHours())) - 1;
+  };
+
+  const getLatestEndTime = () => {
+    if (!events.length) return null;
+    return Math.max(...events.map((event) => event.end.getHours()));
+  };
+
+  const earliestStartTime = getEarliestStartTime();
+  const latestEndTime = getLatestEndTime();
+
+  const filteredTimeSlots = timeSlots.filter((timeSlot) => {
+    const timeParts = timeSlot.split(" ");
+    let hour = parseInt(timeParts[0]);
+    const period = timeParts[1];
+
+    if (period === "PM" && hour !== 12) hour += 12;
+    if (period === "AM" && hour === 12) hour = 0;
+
+    return hour >= (earliestStartTime ?? 0) && hour <= (latestEndTime ?? 23);
+  });
+
   return (
     <div className="flex flex-col h-screen overflow-auto">
       <div className="flex-none grid grid-cols-8 bg-gray-200 mr-4">
@@ -117,12 +141,11 @@ const WeekView: React.FC<WeekViewProps> = ({ events, currentDate }) => {
       </div>
 
       <div className="flex-grow overflow-y-clip">
-        {timeSlots.map((timeSlot) => (
+        {filteredTimeSlots.map((timeSlot) => (
           <div key={timeSlot} className="grid grid-cols-8 bg-gray-200">
-            <div className="min-h-20 px-2 py-1 text-right text-sky-500 bg-white mb-px">
+            <div className="min-h-20 px-2 py-1 text-right text-gray-500 bg-white">
               {timeSlot}
             </div>
-
             {daysOfWeek.map((day, dayIndex) => {
               const slotEvents = getEventsForTimeSlot(day, timeSlot);
               const overlappingGroups = getOverlappingGroups(slotEvents);
@@ -130,7 +153,9 @@ const WeekView: React.FC<WeekViewProps> = ({ events, currentDate }) => {
               return (
                 <div
                   key={dayIndex}
-                  className="min-h-20 relative bg-white mr-px mb-px"
+                  className={`min-h-20 relative bg-white mr-px mb-px ${
+                    dayIndex === 0 ? "ml-px" : ""
+                  }`}
                 >
                   {overlappingGroups.map((group, groupIndex) => (
                     <WeekEventCard

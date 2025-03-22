@@ -39,7 +39,7 @@ const MonthView: React.FC<MonthViewProps> = ({ events, currentDate }) => {
     <div className="bg-white rounded-lg shadow">
       <div className="grid grid-cols-7 bg-white-100 border-b">
         {weekdays.map((day) => (
-          <div key={day} className="p-2 text-center text-sky-700 font-medium">
+          <div key={day} className="p-2 text-center text-gray-700 font-medium">
             {day}
           </div>
         ))}
@@ -79,7 +79,7 @@ const MonthView: React.FC<MonthViewProps> = ({ events, currentDate }) => {
                 <div className="mt-1 space-y-1">
                   {Object.entries(groupedEvents).map(
                     ([timeKey, timeEvents]) => (
-                      <div key={timeKey} className="flex justify-between p-3">
+                      <div key={timeKey} className="flex justify-between p-2">
                         <EventCard events={timeEvents} />
                       </div>
                     )

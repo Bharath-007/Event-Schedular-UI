@@ -94,7 +94,7 @@ const WeekEventCard: FC<IWeekEventCard> = ({
     display: "flex",
     alignItems: "start",
     boxShadow: "0px 2px 4px rgba(0, 0, 0, 0.3)",
-    borderLeft: "8px solid #3b82f6",
+    borderLeft: "8px solid #2257C8",
     position: eventStyle.position,
     flexDirection: "column",
     bgcolor: isOpen ? "#dbeafe" : "white",

@@ -54,7 +54,7 @@ const EventList: React.FC<EventListProps> = ({
           Meetings
         </Typography>
         <IconButton onClick={onClose} size={isSmallScreen ? "small" : "medium"}>
-          <IoCloseCircle color="#3b82f6" size={isSmallScreen ? 20 : 24} />
+          <IoCloseCircle color="#2257C8" size={isSmallScreen ? 20 : 24} />
         </IconButton>
       </Box>
       <Divider />
@@ -75,7 +75,7 @@ const EventList: React.FC<EventListProps> = ({
                 // borderRadius: 1,
                 boxShadow: "0 2px 4px rgba(0, 0, 0, 0.1)",
                 marginBottom: 1.5,
-                borderLeft: "1vh solid #3b82f6",
+                borderLeft: "1vh solid #2257C8",
                 position: "relative",
                 cursor: "pointer",
                 transition: "all 0.2s ease",
@@ -176,7 +176,7 @@ const EventList: React.FC<EventListProps> = ({
                 onClick={(e) => e.stopPropagation()}
               >
                 <IconButton size={isSmallScreen ? "small" : "medium"}>
-                  <IoPencil size={isSmallScreen ? 16 : 18} color="#3b82f6" />
+                  <IoPencil size={isSmallScreen ? 16 : 18} color="#2257C8" />
                 </IconButton>
                 <IconButton size={isSmallScreen ? "small" : "medium"}>
                   <IoTrash size={isSmallScreen ? 16 : 18} color="#ef4444" />

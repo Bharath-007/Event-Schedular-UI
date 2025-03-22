@@ -1,7 +1,7 @@
 import React from "react";
-import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
 import { CalendarViewProps } from "./types/types";
-import { IconButton, Paper, Tab, Tabs } from "@mui/material";
+import { Button, ButtonGroup, IconButton, Tab, Tabs } from "@mui/material";
+import { GoChevronLeft, GoChevronRight } from "react-icons/go";
 
 interface CalendarHeaderProps
   extends Pick<CalendarViewProps, "view" | "onViewChange"> {
@@ -22,13 +22,11 @@ const CalendarHeader: React.FC<CalendarHeaderProps> = ({
   const getHeaderTitle = () => {
     switch (view) {
       case "day":
-        return currentDate
-          .toLocaleDateString("en-GB", {
-            day: "numeric",
-            month: "long",
-            year: "numeric",
-          })
-          .replace(",", "");
+        return currentDate.toLocaleDateString("en-US", {
+          month: "long",
+          day: "2-digit",
+          year: "numeric",
+        });
       case "week":
         const startOfWeek = new Date(currentDate);
         startOfWeek.setDate(currentDate.getDate() - currentDate.getDay());
@@ -53,22 +51,9 @@ const CalendarHeader: React.FC<CalendarHeaderProps> = ({
   };
 
   return (
-    <div className="flex justify-between items-center px-4 py-2 bg-white rounded-t-lg">
-      <div className="flex gap-2">
-        <IconButton
-          sx={{ border: "2px solid #3b82f6", borderRadius: 1, px: 1 }}
-          onClick={onPrevious}
-          className="p-0 hover:bg-gray-200 transition duration-200 w-1/3 h-8"
-        >
-          <FaChevronLeft />
-        </IconButton>
-        <IconButton
-          sx={{ border: "2px solid #3b82f6", borderRadius: 1, px: 1 }}
-          onClick={onNext}
-          className="p-0 hover:bg-gray-200 transition duration-200 w-1/3 h-8"
-        >
-          <FaChevronRight />
-        </IconButton>
+    <div className="flex justify-between items-center py-2 bg-white rounded-t-lg pl-24 pr-4">
+      <div className="flex">
+        {/*
         <Paper
           elevation={1}
           className="font-semibold py-1 px-4 text-sky-500"
@@ -77,10 +62,47 @@ const CalendarHeader: React.FC<CalendarHeaderProps> = ({
           {view === "day"
             ? currentDate.getDate()
             : (currentDate.getDate() - currentDate.getDay()).toLocaleString()}
-        </Paper>
+        </Paper> */}
+        <ButtonGroup variant="outlined">
+          <IconButton
+            onClick={onPrevious}
+            sx={{
+              borderRadius: 0,
+              border: "1px solid #D3D3D3",
+              px: 0.5,
+              py: 0.5,
+            }}
+          >
+            <GoChevronLeft />
+          </IconButton>
+          <IconButton
+            onClick={onNext}
+            sx={{
+              borderRadius: 0,
+              border: "1px solid #D3D3D3",
+              px: 0.5,
+              py: 0.5,
+            }}
+          >
+            <GoChevronRight />
+          </IconButton>
+        </ButtonGroup>
+        <Button
+          className="ml-4 text-base"
+          onClick={onToday}
+          variant="contained"
+          sx={{
+            bgcolor: "#2257C8",
+            textTransform: "capitalize",
+            borderRadius: 0,
+            px: 4,
+          }}
+        >
+          Today
+        </Button>
       </div>
       <div className="flex items-center">
-        <h2 className="text-xl font-semibold">{getHeaderTitle()}</h2>
+        <h2 className="text-base font-semibold">{getHeaderTitle()}</h2>
       </div>
       <div className="flex items-center">
         <Tabs
@@ -102,11 +124,13 @@ const CalendarHeader: React.FC<CalendarHeaderProps> = ({
               value={label.toLowerCase()}
               sx={{
                 textTransform: "capitalize",
-                fontWeight: view === label.toLowerCase() ? 600 : 500,
+                fontWeight: 500,
                 color: view === label.toLowerCase() ? "#3f51b5" : "#000",
                 minWidth: 80,
                 "&.MuiButtonBase-root": {
                   paddingBottom: 0,
+                  paddingRight: 0,
+                  paddingLeft: 0,
                 },
               }}
             />

@@ -84,17 +84,16 @@ const DayEventCard: FC<IDayEventCard> = ({
   }, [events, totalOverlapping, overlapIndex]);
 
   const boxSx: SxProps<Theme> = {
-    padding: "5px",
-    borderRadius: "4px",
-    width: "95%",
+    borderRadius: "2px",
+    width: "65%",
     // maxWidth: eventStyle.width,
-    marginLeft: 2,
-    left: eventStyle.left,
+    // marginLeft: 2,
+    // left: eventStyle.left,
     display: "flex",
     alignItems: "center",
-    justifyContent: "center",
+    justifyContent: "flex-start",
+    mx: "auto",
     boxShadow: "0px 2px 4px rgba(0, 0, 0, 0.3)",
-    borderLeft: "8px solid #3b82f6",
     position: eventStyle.position,
     flexDirection: "column",
     bgcolor: isOpen ? "#dbeafe" : "white",
@@ -112,26 +111,39 @@ const DayEventCard: FC<IDayEventCard> = ({
   return (
     <>
       <Box sx={boxSx} onClick={handleOpen}>
-        <Typography
-          variant="body2"
-          sx={{
-            fontWeight: 600,
-            color: "grey.800",
-            fontSize: "1rem",
-            textTransform: "capitalize",
-            width: "100%",
-            textAlign: "center",
-          }}
-        >
-          {events[0]?.event?.user_det?.job_id?.jobRequest_Title ?? "N/A"}
-        </Typography>
         <Box
           sx={{
-            width: "60%",
+            width: "100%",
+            backgroundColor: "#2257C8",
             display: "flex",
             justifyContent: "space-between",
             alignItems: "center",
             padding: "0 5px",
+            height: "35%",
+          }}
+        >
+          <Typography
+            variant="body2"
+            sx={{
+              fontWeight: 500,
+              fontSize: "1rem",
+              textTransform: "capitalize",
+              width: "100%",
+              color: "white",
+              textAlign: "center",
+            }}
+          >
+            {events[0]?.event?.user_det?.job_id?.jobRequest_Title ?? "N/A"}
+          </Typography>
+        </Box>
+        <Box
+          sx={{
+            width: "65%",
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+            padding: "0 5px",
+            height: "60%",
           }}
         >
           <Typography
@@ -143,8 +155,10 @@ const DayEventCard: FC<IDayEventCard> = ({
               lineHeight: 1.2,
             }}
           >
-            <span className="font-semibold">Interviewer: </span>
-            {events[0]?.event?.user_det?.handled_by?.firstName ?? "N/A"}
+            Interviewer:
+            <span className="font-semibold">
+              {events[0]?.event?.user_det?.handled_by?.firstName ?? "N/A"}
+            </span>
           </Typography>
           <Typography
             variant="body2"
@@ -154,9 +168,12 @@ const DayEventCard: FC<IDayEventCard> = ({
               fontSize: "0.85rem",
             }}
           >
-            <span className="font-semibold">Time:{""}</span>
-            {moment(events[0]?.start).format("h:mm A")} -{" "}
-            {moment(events[0]?.end).format("h:mm A")}
+            Time:{""}
+            <span className="font-semibold">
+              {" "}
+              {moment(events[0]?.start).format("h:mm A")} -{" "}
+              {moment(events[0]?.end).format("h:mm A")}
+            </span>
           </Typography>
         </Box>
         {events.length > 1 && (

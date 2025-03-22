@@ -45,9 +45,9 @@ const EventPopup: React.FC<EventPopupProps> = ({ event, onClose }) => {
           onClick={onClose}
           size="small"
           sx={{
-            bgcolor: "#3b82f6",
+            bgcolor: "#2257C8",
             color: "white",
-            "&:hover": { bgcolor: "#3b82f6" },
+            "&:hover": { bgcolor: "#2257C8" },
           }}
         >
           <CloseIcon fontSize="small" />
