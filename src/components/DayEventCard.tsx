@@ -119,13 +119,13 @@ const DayEventCard: FC<IDayEventCard> = ({
             justifyContent: "space-between",
             alignItems: "center",
             padding: "0 5px",
-            height: "38%",
+            height: parseInt(eventStyle?.height?.slice(0, 3), 10) < 50 ? "45%" : "38%",
           }}
         >
           <Typography
             sx={{
               fontWeight: 500,
-              fontSize: "1.75vh",
+              fontSize: parseInt(eventStyle?.height?.slice(0, 3), 10) < 50 ? "1.25vh" : "1.75vh",
               textTransform: "capitalize",
               width: "100%",
               color: "white",
@@ -142,7 +142,7 @@ const DayEventCard: FC<IDayEventCard> = ({
             justifyContent: "space-between",
             alignItems: "center",
             padding: "0 5px",
-            height: "60%",
+            height: parseInt(eventStyle?.height?.slice(0, 3), 10) < 50 ? "55%" : "60%",
           }}
         >
           <Typography
@@ -208,7 +208,7 @@ const DayEventCard: FC<IDayEventCard> = ({
             vertical: "top",
             horizontal:
               anchorEl?.getBoundingClientRect().left &&
-              anchorEl?.getBoundingClientRect().left > window.innerWidth / 2
+                anchorEl?.getBoundingClientRect().left > window.innerWidth / 2
                 ? "left"
                 : "right",
           }}
@@ -216,7 +216,7 @@ const DayEventCard: FC<IDayEventCard> = ({
             vertical: "top",
             horizontal:
               anchorEl?.getBoundingClientRect().left &&
-              anchorEl?.getBoundingClientRect().left > window.innerWidth / 2
+                anchorEl?.getBoundingClientRect().left > window.innerWidth / 2
                 ? "right"
                 : "left",
           }}
