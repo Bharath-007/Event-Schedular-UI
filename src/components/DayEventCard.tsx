@@ -120,6 +120,7 @@ const DayEventCard: FC<IDayEventCard> = ({
             alignItems: "center",
             padding: "0 5px",
             height: parseInt(eventStyle?.height?.slice(0, 3), 10) < 50 ? "45%" : "38%",
+            maxHeight: "30px"
           }}
         >
           <Typography
