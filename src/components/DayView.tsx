@@ -19,9 +19,9 @@ const DayView: React.FC<DayViewProps> = ({ events, currentDate }) => {
 
   const dayName = useMemo(
     () => currentDate.toLocaleDateString("en-US", { weekday: "long" }),
-    []
+    [currentDate]
   );
-  const dayNumber = useMemo(() => currentDate.getDate(), []);
+  const dayNumber = useMemo(() => currentDate.getDate(), [currentDate]);
 
   const getEventsForTimeSlot = (timeSlot: string) => {
     const timeParts = timeSlot.split(" ");
@@ -85,7 +85,7 @@ const DayView: React.FC<DayViewProps> = ({ events, currentDate }) => {
     return groups;
   };
 
-  // Filter empty slots from the top until a slot with events is found
+
   const filteredTimeSlots = timeSlots.reduce<string[]>((acc, timeSlot) => {
     const hasEvents = getEventsForTimeSlot(timeSlot).length > 0;
     if (acc.length > 0 || hasEvents) {
@@ -94,12 +94,12 @@ const DayView: React.FC<DayViewProps> = ({ events, currentDate }) => {
     return acc;
   }, []);
 
-  const displayTimeSlots = filteredTimeSlots
-    .concat(timeSlots.slice(filteredTimeSlots.length))
-    .slice(0, filteredTimeSlots.length);
+  // const displayTimeSlots = filteredTimeSlots
+  //   .concat(timeSlots.slice(filteredTimeSlots.length))
+  //   .slice(0, filteredTimeSlots.length);
 
-  const slotToDisplay =
-    displayTimeSlots.length === 0 ? timeSlots : displayTimeSlots;
+  // const slotToDisplay =
+  //   displayTimeSlots.length === 0 ? timeSlots : displayTimeSlots;
 
   return (
     <div className="flex flex-col h-screen overflow-auto bg-gray-200 t-2">
@@ -116,7 +116,7 @@ const DayView: React.FC<DayViewProps> = ({ events, currentDate }) => {
         </div>
       </div>
       <div className="flex-grow overflow-y-clip">
-        {slotToDisplay.map((timeSlot, index) => {
+        {timeSlots.map((timeSlot, index) => {
           const slotEvents = getEventsForTimeSlot(timeSlot);
           const overlappingGroups = getOverlappingGroups(slotEvents);
 

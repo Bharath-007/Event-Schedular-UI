@@ -119,14 +119,13 @@ const DayEventCard: FC<IDayEventCard> = ({
             justifyContent: "space-between",
             alignItems: "center",
             padding: "0 5px",
-            height: "35%",
+            height: "38%",
           }}
         >
           <Typography
-            variant="body2"
             sx={{
               fontWeight: 500,
-              fontSize: "1rem",
+              fontSize: "1.75vh",
               textTransform: "capitalize",
               width: "100%",
               color: "white",
@@ -138,7 +137,7 @@ const DayEventCard: FC<IDayEventCard> = ({
         </Box>
         <Box
           sx={{
-            width: "65%",
+            width: "62%",
             display: "flex",
             justifyContent: "space-between",
             alignItems: "center",

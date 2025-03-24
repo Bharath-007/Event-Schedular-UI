@@ -19,6 +19,7 @@ const CalendarHeader: React.FC<CalendarHeaderProps> = ({
   onNext,
   onToday,
 }) => {
+  
   const getHeaderTitle = () => {
     switch (view) {
       case "day":
